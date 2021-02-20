@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage{amsmath}
+\input{shareddefs.tex}
+\begin{document}
+
+\section{Self-Reporting Test-Positive Bias}
+
+\begin{equation*}
+    P(\textrm{participating given infected}) = \frac{P(\textrm{infected given participating})\pin}{P(\textrm{infected})}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{infected given participating}) = \textrm{foi}*(1-P(\textrm{vaccinated and avoided})) = \textrm{foi}*(1-LE)
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{infected given non-participating}) = \textrm{foi}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{infected}) = (1-\pin)\textrm{foi} + \pin\textrm{foi}(1-LE) = \textrm{foi}(1-P(\textrm{participating})LE)
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{participating given infected}) = \frac{(1-LE)\pin}{1-\pin LE}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{not participating given infected}) = \frac{1-\pin}{1-\pin LE}
+\end{equation*}
+
+\begin{equation*}\begin{aligned}
+    1-LE < 1-\pin LE &\implies \frac{1-LE}{1-\pin LE} < 1\\
+    & \implies P(\textrm{participating given infected}) < \pin \\
+    & \implies P(\textrm{not participating given infected}) > 1-\pin
+\end{aligned}\end{equation*}
+
+\section{Self-Reporting Test-Negative (Non-)Bias}
+
+\begin{equation*}
+    P(\textrm{participating given not-infected}) = \frac{P(\textrm{not-infected given participating})\pin}{P(\textrm{not-infected})}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{not-infected given participating}) = \textrm{foni}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{not-infected given non-participating}) = \textrm{foni}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{not-infected}) = \textrm{foni}
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{participating given not-infected}) = \pin
+\end{equation*}
+
+\begin{equation*}
+    P(\textrm{not participating given not-infected}) = 1-\pin
+\end{equation*}
+
+\section{TNCC Self-Reporting Only}
+
+\begin{equation*}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} = 1 - \frac{P(\textrm{participating given infected})}{P(\textrm{non-participating given infected})}\times\frac{P(\textrm{non-participating given not-infected})}{P(\textrm{participating given not-infected})}    
+\end{equation*}
+
+\begin{equation*}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} = 1 - \frac{(1-E)\pin}{1-\pin}\times\frac{1-\pin}{\pin} = 1-(1-E) = E
+\end{equation*}
+
+\section{Contact Tracing, All Controls}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - \frac{P(\textrm{participating given infected})\times \textrm{index cases}}{P(\textrm{non-participating given infected})\times \textrm{index cases}}\\
+&\times\frac{P(\textrm{non-participating given not-infected})\times \textrm{index non-cases} + P(\textrm{non-participating given infected})\times\textrm{contacts}}{P(\textrm{participating given not-infected})\times \textrm{index non-cases} + P(\textrm{participating given infected})\times\textrm{contacts}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E)\times\\
+&\frac{\textrm{index non-cases} + \frac{P(\textrm{non-participating given infected})}{P(\textrm{non-participating given not-infected})}\times\textrm{contacts}}{\textrm{index non-cases} + \frac{P(\textrm{participating given infected})}{P(\textrm{participating given not-infected})}\times\textrm{contacts}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\frac{P(\textrm{non-participating given infected})}{P(\textrm{non-participating given not-infected})} &= \frac{1}{1-\pin E}\\
+\frac{P(\textrm{participating given infected})}{P(\textrm{participating given not-infected})} &= \frac{1-E}{1-\pin E}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E)\times\frac{1 + A}{1 + (1-E)A}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+1 + A > 1 + (1-E)A \implies \frac{1 + A}{1 + (1-E)A} > 1 \implies \genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} < E
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\alpha &= \frac{1 + A}{1 + (1-E)A} > 1 \implies\\ 1-\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= (1-E)\alpha \implies\\
+1-\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &> 1-E \implies\\
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &< E
+\end{aligned}\end{equation*}
+
+\section{Contact Tracing, All Cases}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - \frac{P(\textrm{participating given infected})\times \textrm{index cases} + P(\textrm{participating given infected})\times (1-E) \times\textrm{contacts}}{P(\textrm{non-participating given infected})\times \textrm{index cases} + P(\textrm{non-participating given infected})\times\textrm{contacts}}\\
+&\times\frac{P(\textrm{non-participating given not-infected})\times \textrm{index non-cases}}{P(\textrm{participating given not-infected})\times \textrm{index non-cases} + P(\textrm{participating given infected})\times E \times\textrm{contacts}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E) \frac{1 + (1-E)R}{1 + R}\\
+&\times\frac{1}{1+\frac{P(\textrm{participating given infected})}{P(\textrm{participating given not-infected})}\times E \times \frac{\textrm{contacts}}{\textrm{index non-cases}}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E) \frac{1 + (1-E)R}{1 + R}\\
+&\times\frac{1}{1+\frac{1-E}{1-\pin E}\times E R\frac{\textrm{index cases}}{\textrm{index non-cases}}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E) \frac{1 + (1-E)R}{1 + R}\frac{1}{1+R(1-E)\frac{E}{1-\pin E}\frac{\textrm{index cases}}{\textrm{index non-cases}}}
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+1 + (1-E)R < 1 + R &\implies \frac{1 + (1-E)R}{1 + R} < 1\\
+0 < R(1-E)\frac{E}{1-\pin E}\frac{\textrm{index cases}}{\textrm{index non-cases}} &\implies \frac{1}{1+R(1-E)\frac{E}{1-\pin E}\frac{\textrm{index cases}}{\textrm{index non-cases}}} < 1
+\end{aligned}\end{equation*}
+
+\begin{equation*}\begin{aligned}
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &= 1 - (1-E)\beta,\quad \beta < 1\\
+1-\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &<  1-E\\
+\genfrac{}{}{0pt}{}{\textrm{estimated}}{\textrm{efficacy}} &> E
+\end{aligned}\end{equation*}
+
+\end{document}

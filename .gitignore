@@ -1,0 +1,12 @@
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.pdf
+*.toc
+*.docx
+*.md
+.Rproj.user

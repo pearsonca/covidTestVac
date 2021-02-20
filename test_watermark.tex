@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage[printwatermark]{xwatermark}
+\usepackage{tikz}
+
+%\newsavebox\mybox
+%\savebox\mybox{\tikz[color=black!30,opacity=0.3]\node[align=center]{DRAFT \\ Do not distribute};}
+%\newwatermark*[
+%  allpages,
+%  angle=45,
+%  scale=8,
+%  xpos=-30,
+%  ypos=35
+%]{\usebox\mybox}
+
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\begin{document}
+
+\input{auths.tex}
+
+\title{Supplement for \partitle}
+
+\maketitle
+
+\clearpage
+
+\tableofcontents
+%\listoftables
+%\listoffigures
+
+\clearpage
+
+\section{Overview}
+
+In the main text, we described a population that i) heterogeneously receives a study vaccine, ii) with individuals in that population subsequently exhibiting symptoms of Ebola Virus Disease (EVD) or having contact with known EVD cases, iii) identified by a combination of self-reporting and contact-tracing processes as part of an outbreak response, and iv) ultimately being recruited into a Test-Negative Case Control (TNCC) study of the vaccine.
+
+Throughout the rest of the Supplement, we translate the specific case of EVD into more general terms (\sref{generalizationsection}), provide full derivations of equations quoted in the main text (Sections Y-Z), additional results (Section X2), and explain model assumptions with examples (Section Y2).
+
+\section{Generalization of Concepts}\label{generalizationsection}
+
+Hereafter, instead of addressing a study vaccine and vaccination, we consider a generic {\em study intervention} and receipt of that intervention. The study intervention is distinct from any other outbreak control measures that might be ongoing. This study intervention is still heterogeneously distributed, and the TNCC study goal is still to determine the intervention efficacy.
+
+Instead of addressing EVD specifically, we consider a generic pathogen. The main text discusses self-reporting and contact-tracing as particular recruiting routes for EVD, which more generally are a random {\em primary} process and a reactive {\em secondary} process, respectively. For both routes, we still assume a highly sensitive and specific test for identifying infections with the target pathogen. Because the recruitment processes may not be disease-related, we discuss intervention efficacy in terms of infection rather than disease.
+
+\section{Definitions}
+
+\subsection{Population Heterogeneity}
+
+The heterogeneity model is identical to that described in the main text. There are two types of individuals in the population: {\em non-participating} and {\em participating}. Non-participating individuals do not receive the study intervention. Participating individuals randomly receive the intervention with some probability. Aside from participation and vaccination status, individuals are identical.
+
+\end{document}
+
+% 
