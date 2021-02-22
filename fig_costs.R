@@ -6,12 +6,11 @@ suppressPackageStartupMessages({
   require(showtext)
 })
 
-grid.dt <- as.data.table(expand.grid(
-  sens = seq(0.7, 1, by=0.01),
-  spec = seq(0.7, 1, by=0.01),
-  seropos = seq(0.2, 0.8, by=0.2),
-  test_cost_frac = seq(0.2, 0.8, by=0.1)
-))
+.args <- if (interactive()) c(
+  "grid.rds", "costs.png"
+) else ccommandArgs(trailingOnly = TRUE)
+
+grid.dt <- readRDS(.args[1])
 
 expanded_protection_factor <- function(
   TPR, TNR, seropositivity
