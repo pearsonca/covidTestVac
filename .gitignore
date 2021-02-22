@@ -10,3 +10,4 @@
 *.docx
 *.md
 .Rproj.user
+*.rds
