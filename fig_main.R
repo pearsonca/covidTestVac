@@ -30,36 +30,59 @@ ref.mlt[,
   ord := 2*c("notest"=2,"test70"=1,"test90"=0)[scenario]+c(sp=0, sn=1)[serostatus]
 ]
 
+ref.mlt[, value := ifelse(serostatus == "sn", -value, value) ]
+
 ref[, costlim70 := PPDmul(1, .7, seropos) - 1 ]
 ref[, costlim90 := PPDmul(1, .9, seropos) - 1 ]
+
+alpha_scale <- scale_alpha_manual(
+  "Test Performance",
+  labels = c(
+    "notest"="(No Test)",
+    "test70"="70% Sensitivity",
+    "test90"="90% Sensitivity"
+  ),
+  values = c("notest"=.75, "test70"=.5, "test90"=.25)
+) 
 
 p.coverage <- ggplot(ref.mlt) +
   aes(seropos, value, group = ord, fill = serostatus, alpha = scenario) +
   geom_area() +
-  coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 0.5), expand = FALSE) +
-  scale_alpha_manual(
-    "Test Performance",
-    labels = c(
-      "notest"="(No Test)",
-      "test70"="70% Sensitivity",
-      "test90"="90% Sensitivity"
-    ),
-    values = c("notest"=.25, "test70"=.5, "test90"=1)
-  ) +
+  coord_cartesian(xlim = c(0.2, 0.8), 
+                  #ylim = c(0, 0.5), 
+                  expand = FALSE) +
+  alpha_scale + 
   scale_fill_manual(
     "Vaccinee Serostatus",
     breaks = c("sp","sn"),
     labels = c(sn="Negative", sp="Positive"),
     values = c(sn="dodgerblue", sp="firebrick")
   ) +
-  geom_line(aes(seropos, y=covaxcoverage, linetype = "notest"), ref, inherit.aes = FALSE, show.legend = F) +
-  geom_line(aes(seropos, y=(costlim70+1)*covaxcoverage, linetype = "test70"), ref, inherit.aes = FALSE, show.legend = F) +
-  geom_line(aes(seropos, y=(costlim90+1)*covaxcoverage, linetype = "test90"), ref, inherit.aes = FALSE, show.legend = F) +
-  scale_y_continuous("Total Immunized Fraction", breaks = seq(0,0.5,0.1), minor_breaks = NULL) +
+  scale_y_continuous("Immunized Fraction", 
+                     labels = abs,
+                     #breaks = seq(-0.25, 0.5,by =  0.25), 
+                     minor_breaks = NULL) +
   scale_x_continuous("Seroprevalence") +
-  scale_linetype_manual(
-    values = c(notest="solid", test70="longdash", test90="dotted")
-  ) +
+  theme_minimal() +
+  theme(
+    legend.position = c(0, 1), legend.justification = c(0, 1)
+  )
+
+p.coverage.total <- ggplot(ref.mlt) +
+  aes(seropos, value, group = ord, fill = serostatus, alpha = scenario) +
+  coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 1), expand = FALSE) +
+  alpha_scale + 
+  geom_line(aes(seropos, y=covaxcoverage, alpha = "notest"), 
+            ref, inherit.aes = FALSE, show.legend = F) +
+  geom_line(aes(seropos, y=(costlim70+1)*covaxcoverage, alpha = "test70"),
+            ref, inherit.aes = FALSE, show.legend = F) +
+  geom_line(aes(seropos, y=(costlim90+1)*covaxcoverage, alpha = "test90"), 
+            ref, inherit.aes = FALSE, show.legend = F) +
+  scale_y_continuous("Total Immunized Fraction", 
+                     labels = abs,
+                     #limits = c(0,1),
+                     minor_breaks = NULL) +
+  scale_x_continuous("Seroprevalence") +
   theme_minimal() +
   theme(
     legend.position = c(0, 1), legend.justification = c(0, 1)
@@ -67,28 +90,21 @@ p.coverage <- ggplot(ref.mlt) +
 
 p.cost <- ggplot(ref) +
   aes(seropos) +
-  geom_blank(aes(linetype = "notest")) +
-  geom_line(aes(y=costlim70, linetype = "test70")) +
-  geom_line(aes(y=costlim90, linetype = "test90")) +
+  geom_blank(aes(alpha = "notest"), show.legend = FALSE) +
+  geom_line(aes(y=costlim70, alpha = "test70"), show.legend = FALSE) +
+  geom_line(aes(y=costlim90, alpha = "test90"), show.legend = FALSE) +
   coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 1), expand = FALSE) +
   scale_x_continuous("Seroprevalence") +
-  scale_y_continuous("Cost-Limit for Testing,\nas a Fraction of Dose Cost") +
-  scale_linetype_manual(
-    "Test Performance",
-    breaks = c("notest", "test70", "test90"),
-    labels = c(
-      "notest"="(No Test)",
-      "test70"="70% Sensitivity",
-      "test90"="90% Sensitivity"
-    ),
-    values = c("solid", "longdash", "dotted")
-  ) +
+  scale_y_continuous("Cost-Limit for Testing,\nas a Fraction of Dose Cost",
+                     minor_breaks = NULL,
+                     labels = function(x){sprintf("%g",x)}) +
+  alpha_scale +
   theme_minimal() +
   theme(
     legend.position = c(0, 1), legend.justification = c(0, 1)
   )
 
-res.p <- p.coverage / p.cost +
+res.p <- p.coverage / (p.coverage.total + p.cost) +
   plot_annotation(tag_levels = "A") +
   plot_layout(guides = "collect")
 
