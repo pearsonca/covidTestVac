@@ -44,7 +44,7 @@ p.coverage <- ggplot(ref.mlt) +
       "test70"="70% Sensitivity",
       "test90"="90% Sensitivity"
     ),
-    values = c("notest"=.25, "test70"=.5, "test90"=1)
+    values = c("notest"=.25, "test70"=.5, "test90"=.9)
   ) +
   scale_fill_manual(
     "Vaccinee Serostatus",
@@ -68,6 +68,7 @@ p.coverage <- ggplot(ref.mlt) +
 p.cost <- ggplot(ref) +
   aes(seropos) +
   geom_blank(aes(linetype = "notest")) +
+  geom_ribbon(aes(ymin=0, ymax=costlim70, linetype = "test70")) +
   geom_line(aes(y=costlim70, linetype = "test70")) +
   geom_line(aes(y=costlim90, linetype = "test90")) +
   coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 1), expand = FALSE) +
