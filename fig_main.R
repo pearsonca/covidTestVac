@@ -15,12 +15,14 @@ ref <- data.table(seropos = seq(0,1,by=0.01))
 
 covaxcoverage <- .2
 
+refspec <- .99
+
 ref[, notest_sp := covaxcoverage*seropos ]
 ref[, notest_sn := covaxcoverage*(1-seropos) ]
-ref[, test70_sp := notest_sp*(PPDmul(1, .7, seropos) - 1) ]
-ref[, test70_sn := notest_sn*(PPDmul(1, .7, seropos) - 1) ]
-ref[, test90_sp := notest_sp*(PPDmul(1, .9, seropos)-1) - test70_sp ]
-ref[, test90_sn := notest_sn*(PPDmul(1, .9, seropos)-1) - test70_sn ]
+ref[, test70_sp := notest_sp*(PPDmul(refspec, .7, seropos) - 1) ]
+ref[, test70_sn := notest_sn*(PPDmul(refspec, .7, seropos) - 1) ]
+ref[, test90_sp := notest_sp*(PPDmul(refspec, .9, seropos)-1) - test70_sp ]
+ref[, test90_sn := notest_sn*(PPDmul(refspec, .9, seropos)-1) - test70_sn ]
 
 ref.mlt <- melt.data.table(
   ref,
@@ -31,8 +33,8 @@ ref.mlt[,
   ord := 2*c("notest"=2,"test70"=1,"test90"=0)[scenario]+c(sp=0, sn=1)[serostatus]
 ]
 
-ref[, costlim70 := PPDmul(1, .7, seropos) - 1 ]
-ref[, costlim90 := PPDmul(1, .9, seropos) - 1 ]
+ref[, costlim70 := PPDmul(refspec, .7, seropos) - 1 ]
+ref[, costlim90 := PPDmul(refspec, .9, seropos) - 1 ]
 
 lblsize <- 3
 lnsize <- 1
@@ -54,16 +56,15 @@ p.coverage <- ggplot(ref.mlt) +
   geom_line(aes(seropos, y=(costlim90+1)*covaxcoverage, linetype = "test90"), ref, inherit.aes = FALSE, show.legend = F, size = lnsize) +
   annotate(
     "label",
-    x=0.5, y= covaxcoverage * .95,
+    x=0.5, y= covaxcoverage * .90,
     label = expression(symbol('\257')*"  "*symbol('\257')*'  Coverage without Testing  '*symbol('\257')*"  "*symbol('\257')),
-    vjust = "top",
     label.size = 0, fill = alpha(c("white"), 0.5),
     size = lblsize
   ) +
   annotate(
     "label",
-    x = (0.8-0.2)*.95 + 0.2, y = (PPDmul(1, .7, 0.5)*covaxcoverage + covaxcoverage)/2,
-    label = 'Additional Coverage with 70% Sensitive Test',
+    x = (0.8-0.2)*.95 + 0.2, y = (PPDmul(refspec, .7, 0.8)*covaxcoverage + covaxcoverage)/2,
+    label = '... >70% sensitive test',
     hjust = "right",
     label.size = 0, fill = alpha(c("white"), 0.5),
     size = lblsize
@@ -71,8 +72,8 @@ p.coverage <- ggplot(ref.mlt) +
   annotate(
     "label",
     x = (0.8-0.2)*.95 + 0.2,
-    y = (PPDmul(1, .9, 0.8)+PPDmul(1, .7, 0.8))*covaxcoverage/2,
-    label = '...with 90% Sensitive Test',
+    y = (PPDmul(refspec, .9, 0.8)+PPDmul(refspec, .7, 0.8))*covaxcoverage/2,
+    label = 'additional coverage with\n >90% sensitive test',
     hjust = "right",
     label.size = 0, fill = alpha(c("white"), 0.5),
     size = lblsize
@@ -115,7 +116,7 @@ p.cost <- ggplot(ref) +
   annotate(
     "label",
     x = (0.8-0.2)*.975 + .2,
-    y = (PPDmul(1, .7, .6) - 1)/3*2,
+    y = (PPDmul(refspec, .7, .6) - 1)/3*2,
     label = '...if sensitivity >70%',
     hjust = "right",
     label.size = 0, fill = alpha(c("white"), 0.5),
@@ -125,7 +126,7 @@ p.cost <- ggplot(ref) +
   annotate(
     "label",
     x = (0.8-0.2)*.975 + .2,
-    y = (PPDmul(1, .7, .8) + PPDmul(1, .9, .8) - 2)/2,
+    y = (PPDmul(refspec, .7, .8) + PPDmul(refspec, .9, .8) - 2)/2,
     label = 'buy tests\nif sensitivity > 90%',
     hjust = "right",
     label.size = 0, fill = alpha(c("white"), 0.5),
