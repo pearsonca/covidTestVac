@@ -44,7 +44,8 @@ p.coverage <- ggplot(ref.mlt) +
       "test70"="70% Sensitivity",
       "test90"="90% Sensitivity"
     ),
-    values = c("notest"=.25, "test70"=.5, "test90"=.9)
+    values = c("notest"=.25, "test70"=.5, "test90"=.9),
+    guide = guide_legend(override.aes = list(fill="grey5"))
   ) +
   scale_fill_manual(
     "Vaccinee Serostatus",
@@ -68,7 +69,8 @@ p.coverage <- ggplot(ref.mlt) +
 p.cost <- ggplot(ref) +
   aes(seropos) +
   geom_blank(aes(linetype = "notest")) +
-  geom_ribbon(aes(ymin=0, ymax=costlim70, linetype = "test70")) +
+  geom_ribbon(aes(ymin=0, ymax=costlim70, alpha = "test70"), fill = "grey5", show.legend = F) +
+  geom_ribbon(aes(ymin=costlim70, ymax=costlim90, alpha = "test90"), fill = "grey5", show.legend = F) +
   geom_line(aes(y=costlim70, linetype = "test70")) +
   geom_line(aes(y=costlim90, linetype = "test90")) +
   coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 1), expand = FALSE) +
@@ -84,6 +86,7 @@ p.cost <- ggplot(ref) +
     ),
     values = c("solid", "longdash", "dotted")
   ) +
+  scale_alpha_manual(values = c("test90"=.9, "test70"=.5)) +
   theme_minimal() +
   theme(
     legend.position = c(0, 1), legend.justification = c(0, 1)
