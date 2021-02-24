@@ -1,13 +1,10 @@
 
 R = Rscript $^ $@
 
-grid.rds: gen_grid.R
+main.png: fig_main.R
 	${R}
 
-costs.png: fig_costs.R grid.rds
-	${R}
-
-figs: costs.png people.png protection.png
+figs: main.png
 
 SI.pdf: SI.tex refs.bib shareddefs.tex auths.tex figs
 	pdflatex $<
