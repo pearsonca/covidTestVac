@@ -127,7 +127,7 @@ p.cost <- ggplot(ref) +
     "label",
     x = (0.8-0.2)*.975 + .2,
     y = (PPDmul(refspec, .7, .8) + PPDmul(refspec, .9, .8) - 2)/2,
-    label = 'buy tests\nif sensitivity > 90%',
+    label = 'prefer tests\nif sensitivity > 90%',
     hjust = "right",
     label.size = 0, fill = alpha(c("white"), 0.5),
     size = lblsize
@@ -136,13 +136,13 @@ p.cost <- ggplot(ref) +
     "text",
     x = .3,
     y = .75+.125,
-    label = 'buy vaccine doses',
+    label = 'prefer vaccine doses',
     hjust = "left",
     size = lblsize
   ) +
   coord_cartesian(xlim = c(0.2, 0.8), ylim = c(0, 1), expand = FALSE) +
   scale_x_continuous("% Seropositive", minor_breaks = NULL, labels = function(b) sprintf("%i%%", as.integer(b*100))) +
-  scale_y_continuous("Test Cost % of Vaccine Dose Cost", labels = function(b) sprintf("%i%%", as.integer(b*100))) +
+  scale_y_continuous("Testing Cost % of Vaccination Dose Cost", labels = function(b) sprintf("%i%%", as.integer(b*100))) +
   scale_linetype_manual(
     "Test Performance",
     breaks = c("notest", "test70", "test90"),
