@@ -11,4 +11,5 @@
 *.md
 .Rproj.user
 *.rds
+.Rhistory
 *.png
