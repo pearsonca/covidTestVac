@@ -103,12 +103,12 @@ annotations <- list(data.frame(x = 0.6,
                                label = 'prefer tests\nif sensitivity ≥ 70%',
                                scenario = 'test70',
                                hjust = 1),
-                    data.frame(x = (0.8-0.2)*.5 + .2,
+                    data.frame(x = 0.6,
                                y = (PPDmul(refspec, .7, .8) + PPDmul(refspec, .9, .8) - 2)/3,
                                label = 'prefer tests\nif sensitivity ≥ 90%',
                                scenario = 'test90',
                                hjust = 0.5),
-                    data.frame(x = .4,
+                    data.frame(x = .6,
                                y = .75,
                                label = 'prefer additional\nvaccine doses',
                                scenario = 'notest',
@@ -121,6 +121,7 @@ ref[, costlim90 := PPDmul(refspec, .9, seropos) - 1 ]
 
 p.cost <- 
   ggplot(ref) +
+  geom_vline(lty = 2, xintercept = 0.4) +
   aes(seropos) +
   #geom_blank(aes(linetype = "notest")) +
   geom_ribbon(aes(ymin=0, ymax=costlim70), 
